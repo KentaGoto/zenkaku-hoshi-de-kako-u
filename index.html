@@ -1,0 +1,81 @@
+<!DOCTYPE HTML>
+<html lang="ja">
+  <head>
+    <title>zenkaku-hoshi-de-kako-u</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <!-- Bootstrap styles -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <h1>zenkaku-hoshi-de-kako-u</h1>
+      <blockquote>
+        <p>全角文字を「★」で囲います。*.txtファイル（utf8）を1つドロップしてください。<br>
+          出力されたらコピれます。</p>
+      </blockquote>
+      <div id="drop_zone">Drop txt file here</div>
+      <div>
+        <textarea class="form-control" id="converted" rows="10"></textarea>
+      </div>
+
+      <script>
+        function handleFileSelect(evt) {
+          evt.stopPropagation();
+          evt.preventDefault();
+          var files = evt.dataTransfer.files;
+
+          if (1 < files.length){
+            alert("ファイルは1つだけドロップしてください。");
+            return false;
+          }
+
+          var output = [];
+          f = files[0];
+
+          for (key in f){
+            if (!f.name.match(/\.txt$/)){
+              alert("txtファイルをドロップしてください。");
+              return false;
+            }
+          }
+
+          var reader = new FileReader();
+          reader.onerror = function (e) {
+            console.log('error', e.target.error.code);
+          }
+          reader.onload = function (e) {
+            $("#converted").html(addStar(e.target.result));
+          };
+          reader.readAsText(f, 'utf-8');
+        }
+
+        function handleDragOver(evt) {
+          evt.stopPropagation();
+          evt.preventDefault();
+          evt.dataTransfer.dropEffect = 'copy';
+        }
+
+        var dropZone = document.getElementById('drop_zone');
+        dropZone.addEventListener('dragover', handleDragOver, false);
+        dropZone.addEventListener('drop', handleFileSelect, false);
+
+        function addStar(str) {
+          var s_array = str.split("");
+          var result_string = [];
+          var s = "";
+          for (var i = 0; i < s_array.length; ++i){
+            s = s_array[i];
+            if ( s.match(/([^\x01-\x7E])/) ){
+              result_string += "★" + s + "★";
+            } else {
+              result_string += s;
+            }
+          }
+          return result_string;
+        }
+      </script>
+    </div>
+  </body>
+</html>
