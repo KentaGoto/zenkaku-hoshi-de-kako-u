@@ -8,3 +8,6 @@ If there are double-byte characters in the text file, those multi-byte character
 
 ## Requires  
 - Chrome or FireFox and more browser.
+
+## License
+MIT
