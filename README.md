@@ -11,3 +11,6 @@ If there are double-byte characters in the text file, those multi-byte character
 
 ## License
 MIT
+
+## Author  
+Kenta Goto
